@@ -29,7 +29,7 @@ void SCH_Update(void) {
     }
 }
 
-int count = 0;
+int count = 0; // task count in scheduler
 unsigned char SCH_Add_Task(void (*pFunction)(), unsigned int DELAY,
                            unsigned int PERIOD) {
     unsigned char Index = 0;
@@ -43,9 +43,11 @@ unsigned char SCH_Add_Task(void (*pFunction)(), unsigned int DELAY,
     } else if (count > 0) {
         // Find satisfying locations to add new task
         while ((Index < count) && count < SCH_MAX_TASKS) {
+        	// Check each added task's delay and compare
+        	// Update the actual input delay
             if (SCH_tasks_G[Index].Delay > DELAY) {
                 for (int i = count; i > Index; i--) {
-                    SCH_tasks_G[i] = SCH_tasks_G[i - 1];
+                    SCH_tasks_G[i] = SCH_tasks_G[i - 1]; // Shift every task to the right
                 }
                 SCH_tasks_G[Index].pTask = pFunction;
                 SCH_tasks_G[Index].Delay = DELAY;
@@ -73,20 +75,24 @@ unsigned char SCH_Add_Task(void (*pFunction)(), unsigned int DELAY,
     return Index;
 }
 
+//
 void SCH_Dispatch_Tasks(void) {
     if (SCH_tasks_G[0].RunMe > 0) {
         (*SCH_tasks_G[0].pTask)();  // Run the task
-        SCH_tasks_G[0].RunMe -= 1;  // Reset || reduce RunMe flag
+        SCH_tasks_G[0].RunMe--;  // Reset || reduce RunMe flag
         if (SCH_tasks_G[0].Period == 0) {
             SCH_Delete_Task(0);
-        } else {
+        }
+        else {
             sTask temp = SCH_tasks_G[0];
             SCH_Delete_Task(0);
+            SCH_Shift_Task(0);
             SCH_Add_Task(temp.pTask, temp.Delay, temp.Period);
         }
     }
 }
 
+// Deletes task `TASK_INDEX` from the scheduler.
 unsigned char SCH_Delete_Task(const int TASK_INDEX) {
     unsigned char Return_code;
     Return_code = 0;
@@ -95,4 +101,19 @@ unsigned char SCH_Delete_Task(const int TASK_INDEX) {
     SCH_tasks_G[TASK_INDEX].Period = 0;
     SCH_tasks_G[TASK_INDEX].RunMe = 0;
     return Return_code;
+}
+
+// Shifts tasks in the scheduler array starting from TASK_INDEX.
+// Remove a task from the scheduler, and updates the count variable.
+void SCH_Shift_Task(const int TASK_INDEX) {
+    if (TASK_INDEX != count - 1) {
+        for (int i = TASK_INDEX; i < count - 1; i++) {
+            SCH_tasks_G[i] = SCH_tasks_G[i + 1];
+        }
+        SCH_tasks_G[count - 1].pTask = 0x0000;
+        SCH_tasks_G[count - 1].Delay = 0;
+        SCH_tasks_G[count - 1].Period = 0;
+        SCH_tasks_G[count - 1].RunMe = 0;
+    }
+    count--;
 }

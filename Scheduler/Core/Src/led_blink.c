@@ -8,6 +8,13 @@
 #include "led_blink.h"
 #include "main.h"
 
+void init_LED() {
+	HAL_GPIO_WritePin(GREEN_GPIO_Port, GREEN_Pin, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(PURPLE_GPIO_Port, PURPLE_Pin, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(RED_GPIO_Port, RED_Pin, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(WHITE_GPIO_Port, WHITE_Pin, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(YELLOW_GPIO_Port, YELLOW_Pin, GPIO_PIN_SET);
+}
 void blink_GREEN(void) {
 	HAL_GPIO_TogglePin(GREEN_GPIO_Port, GREEN_Pin);
 }
