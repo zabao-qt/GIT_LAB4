@@ -38,6 +38,5 @@ unsigned char SCH_Add_Task(void (*pFunction)(), unsigned int DELAY,
 void SCH_Dispatch_Tasks(void);
 //***** A function for removing tasks from the scheduler (not required in all applications).
 unsigned char SCH_Delete_Task(const int TASK_INDEX);
-void SCH_Shift_Task(const int TASK_INDEX);
 
 #endif /* INC_SCHEDULER_H_ */

@@ -82,7 +82,6 @@ void SCH_Dispatch_Tasks(void) {
         } else {
             sTask temp = SCH_tasks_G[0];
             SCH_Delete_Task(0);
-            SCH_Shift_Task(0);
             SCH_Add_Task(temp.pTask, temp.Delay, temp.Period);
         }
     }

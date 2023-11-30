@@ -22,7 +22,8 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "scheduler.h"
+#include "led_blink.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -56,6 +57,9 @@ static void MX_TIM2_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
+	SCH_Update();							// 10ms interval
+}
 
 /* USER CODE END 0 */
 
@@ -89,7 +93,12 @@ int main(void)
   MX_GPIO_Init();
   MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
-
+  SCH_Init();
+  SCH_Add_Task(blink_GREEN, 0, 50);
+  SCH_Add_Task(blink_PURPLE, 50, 100);
+  SCH_Add_Task(blink_RED, 100, 150);
+  SCH_Add_Task(blink_WHITE, 150, 200);
+  SCH_Add_Task(blink_YELLOW, 250, 250);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -97,7 +106,7 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-
+	  SCH_Dispatch_Tasks();
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
