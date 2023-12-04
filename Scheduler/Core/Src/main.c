@@ -58,7 +58,7 @@ static void MX_TIM2_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
-	SCH_Update();							// 1ms intervals
+	SCH_Update();
 }
 
 /* USER CODE END 0 */
