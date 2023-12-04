@@ -58,7 +58,7 @@ static void MX_TIM2_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
-	SCH_Update();							// 10ms intervals
+	SCH_Update();							// 1ms intervals
 }
 
 /* USER CODE END 0 */
@@ -92,15 +92,15 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_TIM2_Init();
-  HAL_TIM_Base_Start_IT(& htim2);
+  HAL_TIM_Base_Start_IT(&htim2);
   init_LED();
   /* USER CODE BEGIN 2 */
   SCH_Init();
-  SCH_Add_Task(blink_GREEN, 50, 50);
-  SCH_Add_Task(blink_PURPLE, 100, 100);
-  SCH_Add_Task(blink_RED, 150, 150);
-  SCH_Add_Task(blink_WHITE, 200, 200);
-  SCH_Add_Task(blink_YELLOW, 250, 250);
+  SCH_Add_Task(blink_GREEN, 0, 500);
+  SCH_Add_Task(blink_PURPLE, 1000, 1000);
+  SCH_Add_Task(blink_RED, 2000, 1500);
+  SCH_Add_Task(blink_WHITE, 3000, 2000);
+  SCH_Add_Task(blink_YELLOW, 4000, 2500);
   /* USER CODE END 2 */
 
   /* Infinite loop */

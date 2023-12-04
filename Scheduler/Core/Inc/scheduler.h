@@ -23,20 +23,27 @@ typedef struct {
 } sTask;
 
 // MUST BE ADJUSTED FOR EACH NEW PROJECT
-#define SCH_MAX_TASKS 40
-#define NO_TASK_ID 0
-sTask SCH_tasks_G[SCH_MAX_TASKS];
+#define SCH_MAX_TASKS	40
+#define TICK			10
+#define NO_TASK_ID 		0
+typedef struct {
+	sTask TASK_QUEUE[SCH_MAX_TASKS];
+	int numofTask;
+} taskList;
+
+taskList SCH_tasks_G;
 
 //***** An initialization function.
 void SCH_Init(void);
 //***** A single interrupt service routine (ISR), used to update the scheduler at regular time intervals.
 void SCH_Update(void);
 //***** A function for adding tasks to the scheduler.
-unsigned char SCH_Add_Task(void (*pFunction)(), unsigned int DELAY,
-                           unsigned int PERIOD);
+void SCH_Add_Task(void (*pFunction)(), uint32_t DELAY, uint32_t PERIOD);
 //***** A dispatcher function that causes tasks to be executed when they are due to run.
 void SCH_Dispatch_Tasks(void);
 //***** A function for removing tasks from the scheduler (not required in all applications).
-unsigned char SCH_Delete_Task(const int TASK_INDEX);
-void SCH_Shift_Task (const int TASK_INDEX);
+void SCH_Delete_Task(void);
+void insert_to_list(sTask task);
+
+
 #endif /* INC_SCHEDULER_H_ */
